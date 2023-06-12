@@ -48,6 +48,7 @@
 		D2ED5E2A2A290C6800381A1E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		D2ED5E2C2A290C6900381A1E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D2ED5E2E2A290C6900381A1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2ED5E382A29235E00381A1E /* nOcAp MessagesExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "nOcAp MessagesExtension.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +101,7 @@
 		D2ED5E262A290C6800381A1E /* nOcAp MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				D2ED5E382A29235E00381A1E /* nOcAp MessagesExtension.entitlements */,
 				D2ED5E272A290C6800381A1E /* MessagesViewController.swift */,
 				D2ED5E292A290C6800381A1E /* MainInterface.storyboard */,
 				D2ED5E2C2A290C6900381A1E /* Assets.xcassets */,
@@ -351,6 +353,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_ENTITLEMENTS = "nOcAp MessagesExtension/nOcAp MessagesExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5N28K5VRAQ;
@@ -377,6 +380,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_ENTITLEMENTS = "nOcAp MessagesExtension/nOcAp MessagesExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5N28K5VRAQ;
@@ -415,7 +419,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.PocketArt.nOcAp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.7;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -436,7 +440,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.PocketArt.nOcAp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.7;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

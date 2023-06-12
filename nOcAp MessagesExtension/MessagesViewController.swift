@@ -10,6 +10,12 @@ import Messages
 
 class MessagesViewController: MSMessagesAppViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableView: UITableView!
+    
+    var searchText = ""
+    var textStorage = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -22,6 +28,11 @@ class MessagesViewController: MSMessagesAppViewController {
         // This will happen when the extension is about to present UI.
         
         // Use this method to configure the extension and restore previously stored state.
+        searchBar.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.isScrollEnabled = true
+        
     }
     
     override func didResignActive(with conversation: MSConversation) {
@@ -59,8 +70,106 @@ class MessagesViewController: MSMessagesAppViewController {
     
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         // Called after the extension transitions to a new presentation style.
-    
+        if self.presentationStyle == MSMessagesAppPresentationStyle.expanded {
+            self.searchBar.becomeFirstResponder()
+        }
         // Use this method to finalize any behaviors associated with the change in presentation style.
     }
+    
+    func radomize(searchString:String) -> String {
+        let text = searchString
+        var modifiedString = ""
+        for char in text {
+            var modifiedChar = ""
+            let random = Int.random(in: 1...100)
+            if random < 51 {
+                modifiedChar = char.lowercased()
+            } else {
+                modifiedChar = char.uppercased()
+            }
+            modifiedString.append(modifiedChar)
+        }
+        return modifiedString
+    }
 
+}
+
+extension MessagesViewController : UISearchBarDelegate {
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if self.presentationStyle == .compact {
+            self.requestPresentationStyle(.expanded)
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if let text = searchBar.text {
+            self.searchText = text
+            self.textStorage = [String]()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar.resignFirstResponder()
+        self.searchBar.text = ""
+        self.tableView.isHidden = true
+        self.searchBar.showsCancelButton = false
+    }
+        
+}
+
+extension MessagesViewController : UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchText.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "messageTableViewCell") as? UITableViewCell else { return UITableViewCell()}
+
+        var content = cell.defaultContentConfiguration()
+        var noCapText = self.radomize(searchString: searchText)
+        content.text = noCapText
+        self.textStorage.append(noCapText)
+        cell.contentConfiguration = content
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let layout = MSMessageTemplateLayout()
+        var captionText = ""
+        if indexPath.row < textStorage.count {
+            captionText = textStorage[indexPath.row]
+        } else {
+            captionText = self.radomize(searchString: searchText)
+        }
+        layout.caption = captionText
+        layout.subcaption = self.radomize(searchString: "Powered by: no cap app")
+        
+        let pasteboard = UIPasteboard.general
+        pasteboard.string = captionText
+
+        let message = MSMessage()
+        message.layout = layout
+        activeConversation?.insert(message, completionHandler: { _ in
+            self.requestPresentationStyle(.compact)
+        })
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let noCapTitle = "no cap options"
+        return self.radomize(searchString: noCapTitle)
+    }
+    
+}
+
+extension MessagesViewController : UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
 }
